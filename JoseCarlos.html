@@ -176,7 +176,7 @@ function sS(){localStorage.setItem('jc2',JSON.stringify(ST));}
 let ST=lS();
 
 function ss(s,m){const d=document.getElementById('sd');const t=document.getElementById('sm');if(d)d.className='sd'+(s==='ok'?'':s==='e'?' se':' sp');if(t)t.textContent=m;}
-async function push(id,done,dow){ss('sp','Guardando...');try{await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kid:KID,dow:dow,actId:id,done:done})});ss('ok','✓ Sincronizado con mamá');}catch(e){ss('e','Sin conexión');}}
+async function push(id,done,dow){ss('sp','Guardando...');try{await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify({kid:KID,dow:dow,actId:id,done:done})});ss('ok','✓ Sincronizado con mamá');}catch(e){ss('e','Sin conexión');}}
 async function load(){ss('sp','Cargando...');try{const r=await fetch(API+'?t='+Date.now());const data=await r.json();data.forEach(row=>{if(row.kid===KID){const d=parseInt(row.dow);if(!ST.dy[d])ST.dy[d]={};ST.dy[d][row.actId]=row.done===true||row.done==='true'||row.done===1;}});sS();ss('ok','✓ Sincronizado');ra();}catch(e){ss('e','Sin conexión — datos locales');}}
 
 function tdow(){const d=new Date().getDay();return d===0?4:d-1;}

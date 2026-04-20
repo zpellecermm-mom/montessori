@@ -191,18 +191,21 @@ function setSyncStatus(state,msg){
 async function loadAll(){
   setSyncStatus('sync','Actualizando datos...');
   try{
-    const r=await fetch(API+'?t='+Date.now());
-    const data=await r.json();
+    const url=API+'?nocache='+Date.now();
+    const r=await fetch(url,{method:'GET',redirect:'follow',cache:'no-store'});
+    const txt=await r.text();
+    const data=JSON.parse(txt);
     cloudData={s:{0:{},1:{},2:{},3:{},4:{}},j:{0:{},1:{},2:{},3:{},4:{}}};
     data.forEach(row=>{
       const kid=row.kid;const d=parseInt(row.dow);const actId=row.actId;
       const done=row.done===true||row.done==='true'||row.done===1;
       if(cloudData[kid]&&cloudData[kid][d]!==undefined)cloudData[kid][d][actId]=done;
     });
-    setSyncStatus('ok',`✓ Actualizado — ${new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})}`);
+    setSyncStatus('ok','✓ Actualizado — '+new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}));
     render();
   }catch(e){
-    setSyncStatus('err','Sin conexión — mostrando últimos datos conocidos');
+    setSyncStatus('err','Sin conexión — toca Actualizar para reintentar');
+    render();
   }
 }
 

@@ -232,8 +232,8 @@ function setSyncStatus(state,msg){
 async function pushToCloud(actId,done,dow){
   setSyncStatus('sync','Guardando en la nube...');
   try{
-    await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({kid:KID,dow:dow,actId:actId,done:done})});
+    await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain'},
+      redirect:'follow',body:JSON.stringify({kid:KID,dow:dow,actId:actId,done:done})});
     setSyncStatus('ok','✓ Sincronizado con mamá');
   }catch(e){
     setSyncStatus('err','Sin conexión — guardado solo en tablet');
