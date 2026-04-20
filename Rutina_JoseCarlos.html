@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Jose Carlos — Mis Rutinas</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c1:#7C3AED;--c2:#A78BFA;--c3:#F5F3FF;
+  --green:#16A34A;--blue:#2563EB;--orange:#F59E0B;
+  --dark:#1E1B2E;--card:#FFFFFF;--bg:#FAF8FF;
+  --muted:#94A3B8;--text:#1E293B;--border:#EDE9FE;
+  --r:20px;--rs:12px;--sh:0 4px 20px rgba(124,58,237,0.1)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+.hdr{background:linear-gradient(135deg,#4C1D95 0%,#7C3AED 50%,#A78BFA 100%);padding:1.4rem 1rem 3.5rem;position:relative;overflow:hidden;text-align:center}
+.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:rgba(255,255,255,0.07);border-radius:50%}
+.hdr::after{content:'';position:absolute;bottom:-60px;left:-30px;width:200px;height:200px;background:rgba(255,255,255,0.05);border-radius:50%}
+.hdr-avatar{font-size:3.5rem;margin-bottom:0.3rem;position:relative;z-index:1}
+.hdr-name{font-family:'Fredoka One',cursive;font-size:2.2rem;color:#fff;position:relative;z-index:1}
+.hdr-sub{color:rgba(255,255,255,0.85);font-size:0.85rem;font-weight:700;position:relative;z-index:1;margin-top:2px}
+.date-chip{background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.32);border-radius:50px;padding:0.3rem 1rem;display:inline-block;margin-top:0.6rem;font-size:0.8rem;font-weight:800;color:#fff;position:relative;z-index:1}
+
+.mode-tabs{background:var(--card);margin:-1.8rem 1rem 0;border-radius:var(--r);box-shadow:var(--sh);display:flex;position:relative;z-index:10;overflow:hidden}
+.mtab{flex:1;padding:0.85rem 0.3rem;text-align:center;font-size:0.72rem;font-weight:800;color:var(--muted);cursor:pointer;border:none;background:none;transition:all 0.25s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.mtab .mico{font-size:1.4rem}
+.mtab.on{color:var(--c1);background:var(--c3)}
+.mtab:not(:last-child){border-right:1px solid var(--border)}
+
+.sec{display:none;padding:1rem}
+.sec.on{display:block}
+
+.day-hdr{background:linear-gradient(135deg,var(--c1),var(--c2));border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:1rem;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.day-hdr-title{font-family:'Fredoka One',cursive;font-size:1.3rem}
+.day-hdr-sub{font-size:0.78rem;opacity:0.88;margin-top:2px}
+.day-pct{font-family:'Fredoka One',cursive;font-size:2rem;line-height:1}
+.day-pct-lbl{font-size:0.68rem;opacity:0.85}
+
+/* TEA-FRIENDLY: Clear step indicator */
+.step-indicator{display:flex;gap:6px;margin-bottom:1rem;overflow-x:auto;padding-bottom:2px}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:var(--muted);flex-shrink:0;transition:all 0.3s;background:#fff}
+.step-dot.done{background:var(--c1);border-color:var(--c1);color:#fff}
+.step-dot.current{border-color:var(--c1);color:var(--c1);box-shadow:0 0 0 3px rgba(124,58,237,0.2)}
+
+.bath-banner{background:linear-gradient(135deg,#0EA5E9,#38BDF8);border-radius:var(--rs);padding:0.7rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:10px;color:#fff}
+.bath-icon{font-size:1.6rem;flex-shrink:0}
+.bath-text{font-size:0.82rem;font-weight:700;line-height:1.4}
+.bath-name{font-family:'Fredoka One',cursive;font-size:1.1rem}
+
+.timer-row{display:flex;align-items:center;gap:8px;background:#F0F9FF;border-radius:10px;padding:0.5rem 0.8rem;margin-bottom:0.9rem}
+.timer-ico{font-size:1.3rem}
+.timer-label{font-size:0.8rem;font-weight:700;color:#0369A1;flex:1}
+.timer-display{font-family:'Fredoka One',cursive;font-size:1.4rem;color:#0369A1}
+.timer-btn{background:#0369A1;color:#fff;border:none;border-radius:8px;padding:0.3rem 0.7rem;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:800;cursor:pointer}
+.timer-reset{background:none;border:1px solid #0369A1;color:#0369A1;border-radius:8px;padding:0.3rem 0.7rem;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:800;cursor:pointer;margin-left:4px}
+
+.rblock{background:var(--card);border-radius:var(--r);padding:1rem;margin-bottom:0.9rem;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.rblock-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--c1);margin-bottom:0.7rem;display:flex;align-items:center;gap:7px}
+.ritem{display:flex;align-items:center;gap:11px;padding:0.6rem 0;border-bottom:1px solid var(--c3);cursor:pointer;border-radius:10px;transition:all 0.15s;padding-left:4px;position:relative}
+.ritem:last-child{border-bottom:none}
+.ritem:hover{background:var(--c3);padding-left:8px}
+.ritem:active{transform:scale(0.99)}
+/* TEA: highlight current step */
+.ritem.current-step{background:var(--c3);border-left:3px solid var(--c1);padding-left:8px}
+.rchk{width:36px;height:36px;border-radius:10px;border:2.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);background:#fff}
+.rchk.done{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;transform:scale(1.08);border-radius:10px}
+.ritem-info{flex:1}
+.ritem-name{font-size:0.88rem;font-weight:800;color:var(--text)}
+.ritem-time{font-size:0.7rem;color:var(--muted);margin-top:1px}
+.ritem-ico{font-size:1.3rem;flex-shrink:0}
+
+/* Pause reminder for JC */
+.pause-tip{background:#FEF3C7;border:1.5px solid #FCD34D;border-radius:var(--rs);padding:0.6rem 0.9rem;font-size:0.78rem;font-weight:700;color:#92400E;margin-bottom:0.9rem;display:flex;align-items:center;gap:8px}
+
+.fb-countdown{background:linear-gradient(135deg,#1E1B2E,#2D2A45);border-radius:var(--r);padding:1.2rem;margin-bottom:0.9rem;text-align:center;color:#fff}
+.fb-title{font-family:'Fredoka One',cursive;font-size:1.3rem;margin-bottom:0.3rem}
+.fb-time{font-family:'Fredoka One',cursive;font-size:3rem;color:#A78BFA;line-height:1}
+.fb-sub{font-size:0.78rem;opacity:0.75;margin-top:4px}
+.fb-status{font-size:0.85rem;font-weight:700;margin-top:0.5rem;padding:0.3rem 0.8rem;border-radius:50px;display:inline-block}
+.fb-status.ok{background:#16A34A;color:#fff}
+.fb-status.warn{background:#F59E0B;color:#fff}
+.fb-status.late{background:#DC2626;color:#fff}
+
+.fb-check{display:flex;align-items:center;gap:11px;padding:0.6rem 0.5rem;border-bottom:1px solid #F1F5F9;cursor:pointer;border-radius:10px;transition:all 0.15s}
+.fb-check:last-child{border-bottom:none}
+.fb-check:hover{background:#F8FAFC}
+.fchk{width:34px;height:34px;border-radius:8px;border:2.5px solid #D1D5DB;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);background:#fff}
+.fchk.done{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent}
+.fb-item-name{font-size:0.88rem;font-weight:800}
+.fb-item-ico{font-size:1.2rem;flex-shrink:0;margin-left:auto}
+
+.prog-wrap{margin-bottom:0.9rem}
+.prog-track{height:14px;background:var(--border);border-radius:50px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));border-radius:50px;transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+.prog-label{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--muted);font-weight:700;margin-bottom:4px}
+
+.complete{display:none;text-align:center;padding:2rem 1rem}
+.complete.show{display:block}
+.complete-face{font-size:5rem;margin-bottom:0.5rem;animation:bounce 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes bounce{0%{transform:scale(0.3)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.complete-title{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--c1)}
+.complete-msg-es{font-size:1rem;color:var(--text);margin:0.5rem 0 0.2rem;font-weight:700;line-height:1.4}
+.complete-msg-en{font-size:0.88rem;color:var(--muted);font-style:italic;line-height:1.4}
+.complete-reset{background:none;border:2px solid var(--border);border-radius:50px;padding:0.5rem 1.2rem;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:800;color:var(--muted);cursor:pointer;margin-top:1.2rem}
+
+.cfp{position:fixed;width:9px;height:9px;animation:cfFall linear forwards;z-index:999;pointer-events:none}
+@keyframes cfFall{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(100vh)rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-avatar">🌟</div>
+  <div class="hdr-name">Jose Carlos</div>
+  <div class="hdr-sub">Mis Rutinas del Día</div>
+  <div class="date-chip" id="dateBar"></div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mtab on" onclick="setMode('manana')" id="mt-manana">
+    <span class="mico">🌅</span>Mañana
+  </button>
+  <button class="mtab" onclick="setMode('noche')" id="mt-noche">
+    <span class="mico">🌙</span>Noche
+  </button>
+  <button class="mtab" onclick="setMode('football')" id="mt-football">
+    <span class="mico">🏈</span>Viernes
+  </button>
+</div>
+
+<!-- ══ MAÑANA ══ -->
+<div class="sec on" id="sec-manana">
+  <div style="height:1rem"></div>
+  <div class="day-hdr">
+    <div>
+      <div class="day-hdr-title">🌅 Buenos días</div>
+      <div class="day-hdr-sub">Rutina de mañana · 7:00 – 8:00 am</div>
+    </div>
+    <div style="text-align:right">
+      <div class="day-pct" id="m-pct">0%</div>
+      <div class="day-pct-lbl">completado</div>
+    </div>
+  </div>
+
+  <div class="pause-tip">
+    💡 Toca cada paso cuando lo termines. ¡Uno a la vez!
+  </div>
+
+  <div class="step-indicator" id="m-steps"></div>
+
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Inicio</span><span id="m-done-lbl">0 de 12 pasos</span></div>
+    <div class="prog-track"><div class="prog-fill" id="m-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="rblock">
+    <div class="rblock-title">📋 Pasos de la mañana</div>
+    <div id="m-list"></div>
+  </div>
+
+  <div class="complete" id="m-complete">
+    <div class="complete-face">⭐</div>
+    <div class="complete-title">¡Rutina completa!</div>
+    <div class="complete-msg-es">¡Completaste todos los pasos!<br>Estás listo para un gran día.</div>
+    <div class="complete-msg-en">"Discipline is the bridge between<br>goals and accomplishment!"</div>
+    <button class="complete-reset" onclick="resetSec('manana')">↺ Reiniciar rutina</button>
+  </div>
+</div>
+
+<!-- ══ NOCHE ══ -->
+<div class="sec" id="sec-noche">
+  <div style="height:1rem"></div>
+  <div class="day-hdr">
+    <div>
+      <div class="day-hdr-title">🌙 Buenas noches</div>
+      <div class="day-hdr-sub">Rutina de noche · 6:00 – 8:30 pm</div>
+    </div>
+    <div style="text-align:right">
+      <div class="day-pct" id="n-pct">0%</div>
+      <div class="day-pct-lbl">completado</div>
+    </div>
+  </div>
+
+  <div class="pause-tip">
+    🚿 El orden del baño rota cada día automáticamente.
+  </div>
+
+  <div class="bath-banner">
+    <div class="bath-icon">🚿</div>
+    <div class="bath-text">
+      <div class="bath-name" id="bath-turn-j">Cargando...</div>
+      <div>turno de bañarse primero hoy</div>
+    </div>
+  </div>
+
+  <div class="timer-row">
+    <div class="timer-ico">⏱️</div>
+    <div class="timer-label">Temporizador de baño (20 min)</div>
+    <div class="timer-display" id="bath-timer-j">20:00</div>
+    <button class="timer-btn" onclick="toggleTimer()">▶</button>
+    <button class="timer-reset" onclick="resetTimer()">↺</button>
+  </div>
+
+  <div class="step-indicator" id="n-steps"></div>
+
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Inicio</span><span id="n-done-lbl">0 de 12 pasos</span></div>
+    <div class="prog-track"><div class="prog-fill" id="n-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="rblock">
+    <div class="rblock-title">📋 Pasos de la noche</div>
+    <div id="n-list"></div>
+  </div>
+
+  <div class="complete" id="n-complete">
+    <div class="complete-face">🌙</div>
+    <div class="complete-title">¡Buenas noches!</div>
+    <div class="complete-msg-es">¡Completaste tu rutina de noche!<br>Descansa bien, te lo mereces.</div>
+    <div class="complete-msg-en">"Rest well. Tomorrow is a new<br>opportunity to grow!"</div>
+    <button class="complete-reset" onclick="resetSec('noche')">↺ Reiniciar rutina</button>
+  </div>
+</div>
+
+<!-- ══ FOOTBALL VIERNES ══ -->
+<div class="sec" id="sec-football">
+  <div style="height:1rem"></div>
+  <div class="day-hdr" style="background:linear-gradient(135deg,#1E1B2E,#4C1D95)">
+    <div>
+      <div class="day-hdr-title">🏈 ¡Día de Football!</div>
+      <div class="day-hdr-sub">Salida: 5:15 pm · Entreno: 6:00 pm</div>
+    </div>
+    <div style="text-align:right">
+      <div class="day-pct" id="f-pct">0%</div>
+      <div class="day-pct-lbl">listo</div>
+    </div>
+  </div>
+
+  <div class="fb-countdown">
+    <div class="fb-title">🏈 Tiempo para salir</div>
+    <div class="fb-time" id="fb-time">--:--</div>
+    <div class="fb-sub">Debes salir a las 5:15 pm</div>
+    <div class="fb-status ok" id="fb-status">Calculando...</div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Maletín</span><span id="f-done-lbl">0 de 9 items</span></div>
+    <div class="prog-track"><div class="prog-fill" id="f-bar" style="width:0%"></div></div>
+  </div>
+
+  <div class="rblock">
+    <div class="rblock-title">⚡ Preparación 4:30 pm</div>
+    <div id="f-prep-list"></div>
+  </div>
+
+  <div class="rblock">
+    <div class="rblock-title">🎒 Checklist del maletín</div>
+    <div id="f-bag-list"></div>
+  </div>
+
+  <div class="rblock">
+    <div class="rblock-title">🏠 Al regresar (≈8:30 pm)</div>
+    <div id="f-return-list"></div>
+  </div>
+
+  <div class="complete" id="f-complete">
+    <div class="complete-face">🏈</div>
+    <div class="complete-title">¡Todo listo!</div>
+    <div class="complete-msg-es">¡Maletín completo!<br>¡Que lo des todo en el campo!</div>
+    <div class="complete-msg-en">"Preparation is the key to success.<br>You've got this, champion!"</div>
+    <button class="complete-reset" onclick="resetSec('football')">↺ Reiniciar checklist</button>
+  </div>
+</div>
+
+<script>
+const KID='j';
+const DAYS_ES=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MONTHS_ES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+const MORNING=[
+  {id:'m1',name:'Levantarme e ir al baño',time:'7:00 am',ico:'🛁'},
+  {id:'m2',name:'Lavarme la cara y manos',time:'7:05 am',ico:'🧼'},
+  {id:'m3',name:'Vestirme (ropa lista de anoche)',time:'7:10 am',ico:'👕'},
+  {id:'m4',name:'Tender mi cama con cuidado',time:'7:20 am',ico:'🛏️'},
+  {id:'m5',name:'Desayunar',time:'7:25 am',ico:'🍳'},
+  {id:'m6',name:'Cepillarme los dientes',time:'7:45 am',ico:'🦷'},
+  {id:'m7',name:'Abrir cortinas (Lun, Mié y Vie: mi turno)',time:'7:50 am',ico:'🪟'},
+  {id:'m8',name:'Sacar pachones, tazas o platos del cuarto',time:'7:52 am',ico:'🥤'},
+  {id:'m9',name:'Poner zapatos en zapatera',time:'7:54 am',ico:'👟'},
+  {id:'m10',name:'Ropa sucia al cesto',time:'7:55 am',ico:'🧺'},
+  {id:'m11',name:'Dejar el cuarto ordenado',time:'7:57 am',ico:'✨'},
+  {id:'m12',name:'Revisar agenda y preparar materiales',time:'8:00 am',ico:'📋'},
+];
+const NIGHT=[
+  {id:'n1',name:'Bañarme (20 minutos)',time:'6:00 pm',ico:'🚿'},
+  {id:'n2',name:'Ponerme ropa limpia',time:'6:25 pm',ico:'👕'},
+  {id:'n3',name:'Cenar',time:'6:30 pm',ico:'🍽️'},
+  {id:'n4',name:'Llevar pachón con agua al cuarto',time:'después de cenar',ico:'💧'},
+  {id:'n5',name:'Cepillarme los dientes',time:'7:15 pm',ico:'🦷'},
+  {id:'n6',name:'Poner zapatos en zapatera',time:'7:20 pm',ico:'👟'},
+  {id:'n7',name:'Ropa sucia al cesto',time:'7:22 pm',ico:'🧺'},
+  {id:'n8',name:'Abrir la cama',time:'7:25 pm',ico:'🛏️'},
+  {id:'n9',name:'Preparar ropa para mañana',time:'7:30 pm',ico:'👔'},
+  {id:'n10',name:'Lectura libre en cama',time:'7:45 pm',ico:'📖'},
+  {id:'n11',name:'Luces apagadas — a dormir',time:'8:30 pm',ico:'🌙'},
+];
+const FB_PREP=[
+  {id:'fp1',name:'Ponerme el uniforme de football',time:'4:30 pm',ico:'🏈'},
+  {id:'fp2',name:'Verificar maletín con checklist',time:'4:45 pm',ico:'🎒'},
+  {id:'fp3',name:'Zapatos de tacos puestos',time:'5:05 pm',ico:'👟'},
+  {id:'fp4',name:'¡Listo para salir!',time:'5:15 pm',ico:'🚗'},
+];
+const FB_BAG=[
+  {id:'fb1',name:'Casco',ico:'⛑️'},
+  {id:'fb2',name:'Hombreras',ico:'🏋️'},
+  {id:'fb3',name:'Pantalón de football',ico:'👖'},
+  {id:'fb4',name:'Medias de football',ico:'🧦'},
+  {id:'fb5',name:'Zapatos de tacos (en la mochila)',ico:'👟'},
+  {id:'fb6',name:'Guantes',ico:'🧤'},
+  {id:'fb7',name:'Botella de agua',ico:'💧'},
+  {id:'fb8',name:'Toalla',ico:'🏃'},
+  {id:'fb9',name:'Bucal lavado y en su estuche',ico:'🦷'},
+  {id:'fb10',name:'Estuche de anteojos',ico:'👓'},
+  {id:'fb11',name:'Mudada extra: pants',ico:'👖'},
+  {id:'fb12',name:'Mudada extra: camisa',ico:'👕'},
+  {id:'fb13',name:'Mudada extra: calcetines',ico:'🧦'},
+  {id:'fb14',name:'Mudada extra: calzoncillo',ico:'🩲'},
+  {id:'fb15',name:'Suéter',ico:'🧥'},
+  {id:'fb16',name:'Crocs',ico:'🥿'},
+];
+const FB_RETURN=[
+  {id:'fr1',name:'Bañarme (turno según rotación)',time:'8:30 pm',ico:'🚿'},
+  {id:'fr2',name:'Cenar (si no lo hicimos antes)',time:'8:50 pm',ico:'🍽️'},
+  {id:'fr3',name:'Cepillarme los dientes',time:'9:05 pm',ico:'🦷'},
+  {id:'fr4',name:'Preparar ropa para el lunes',time:'9:10 pm',ico:'👔'},
+  {id:'fr5',name:'Luces apagadas',time:'9:15 pm',ico:'🌙'},
+];
+
+function loadSt(){
+  try{const r=localStorage.getItem('jc_rut');if(r)return JSON.parse(r);}catch(e){}
+  return{manana:{},noche:{},football:{},lastDay:null};
+}
+function saveSt(){localStorage.setItem('jc_rut',JSON.stringify(ST));}
+let ST=loadSt();
+
+const now=new Date();
+const todayKey=`${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+if(ST.lastDay!==todayKey){ST={manana:{},noche:{},football:{},lastDay:todayKey};saveSt();}
+
+document.getElementById('dateBar').textContent=
+  `${DAYS_ES[now.getDay()]} ${now.getDate()} de ${MONTHS_ES[now.getMonth()]}`;
+
+function bathFirst(){
+  const start=new Date(2026,3,17);
+  const diff=Math.floor((now-start)/(24*3600*1000));
+  return diff%2===0?'s':'j';
+}
+function updateBathBanner(){
+  const first=bathFirst();
+  const el=document.getElementById('bath-turn-j');
+  if(el){
+    if(first==='j'){el.textContent='¡Tú vas primero al baño!';}
+    else{el.textContent='Sebastián va primero';}
+  }
+}
+
+let timerSecs=1200;let timerRunning=false;let timerInterval=null;
+function toggleTimer(){
+  if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.querySelector('.timer-btn').textContent='▶';}
+  else{timerRunning=true;document.querySelector('.timer-btn').textContent='⏸';
+    timerInterval=setInterval(()=>{
+      if(timerSecs>0){timerSecs--;updateTimerDisplay();}
+      else{clearInterval(timerInterval);timerRunning=false;document.querySelector('.timer-btn').textContent='▶';timerSecs=1200;}
+    },1000);
+  }
+}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSecs=1200;updateTimerDisplay();document.querySelector('.timer-btn').textContent='▶';}
+function updateTimerDisplay(){
+  const m=Math.floor(timerSecs/60);const s=timerSecs%60;
+  const el=document.getElementById('bath-timer-j');
+  if(el)el.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function updateFbCountdown(){
+  const el=document.getElementById('fb-time');const st=document.getElementById('fb-status');
+  if(!el)return;
+  const target=new Date();target.setHours(17,15,0,0);
+  const diff=target-new Date();
+  if(diff<0){el.textContent='¡Hora de salir!';if(st){st.textContent='🚗 ¡Sal AHORA!';st.className='fb-status late';}return;}
+  const h=Math.floor(diff/3600000);const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);
+  el.textContent=h>0?`${h}h ${String(m).padStart(2,'0')}m`:`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if(st){
+    if(diff>3600000){st.textContent='✓ Tienes tiempo suficiente';st.className='fb-status ok';}
+    else if(diff>900000){st.textContent='⚡ Empieza a prepararte';st.className='fb-status warn';}
+    else{st.textContent='🚨 ¡Apúrate!';st.className='fb-status late';}
+  }
+}
+setInterval(updateFbCountdown,1000);updateFbCountdown();
+
+function toggle(sec,id){
+  if(!ST[sec])ST[sec]={};
+  ST[sec][id]=!ST[sec][id];
+  saveSt();renderSec(sec);
+}
+
+function renderStepDots(items,sec,elId){
+  const el=document.getElementById(elId);if(!el)return;el.innerHTML='';
+  items.forEach((item,i)=>{
+    const done=!!(ST[sec]&&ST[sec][item.id]);
+    const firstNotDone=items.findIndex(it=>!(ST[sec]&&ST[sec][it.id]));
+    const div=document.createElement('div');
+    div.className='step-dot'+(done?' done':i===firstNotDone?' current':'');
+    div.textContent=done?'✓':(i+1);
+    el.appendChild(div);
+  });
+}
+
+function renderList(items,sec,containerId){
+  const el=document.getElementById(containerId);if(!el)return;el.innerHTML='';
+  const firstNotDone=items.findIndex(it=>!(ST[sec]&&ST[sec][it.id]));
+  items.forEach((item,i)=>{
+    const done=!!(ST[sec]&&ST[sec][item.id]);
+    const isCurrent=i===firstNotDone&&!done;
+    const row=document.createElement('div');
+    row.className='ritem'+(isCurrent?' current-step':'');
+    row.onclick=()=>toggle(sec,item.id);
+    row.innerHTML=`
+      <div class="rchk${done?' done':''}">${done?'<span style="color:#fff;font-weight:900">✓</span>':''}</div>
+      <div class="ritem-info">
+        <div class="ritem-name" style="${done?'text-decoration:line-through;opacity:0.4':''}">${item.name}</div>
+        ${item.time?`<div class="ritem-time">${item.time}</div>`:''}
+      </div>
+      <div class="ritem-ico">${item.ico}</div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+function renderFbBag(){
+  const el=document.getElementById('f-bag-list');if(!el)return;el.innerHTML='';
+  FB_BAG.forEach(item=>{
+    const done=!!(ST.football&&ST.football[item.id]);
+    const row=document.createElement('div');row.className='fb-check';row.onclick=()=>toggle('football',item.id);
+    row.innerHTML=`
+      <div class="fchk${done?' done':''}">${done?'<span style="color:#fff;font-weight:900">✓</span>':''}</div>
+      <div class="fb-item-name" style="${done?'text-decoration:line-through;opacity:0.4':''}">${item.name}</div>
+      <div class="fb-item-ico">${item.ico}</div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+function renderSec(sec){
+  if(sec==='manana'){
+    renderList(MORNING,'manana','m-list');
+    renderStepDots(MORNING,'manana','m-steps');
+    const done=MORNING.filter(i=>ST.manana&&ST.manana[i.id]).length;
+    const total=MORNING.length;const pct=Math.round((done/total)*100);
+    document.getElementById('m-pct').textContent=pct+'%';
+    document.getElementById('m-done-lbl').textContent=`${done} de ${total} pasos`;
+    document.getElementById('m-bar').style.width=pct+'%';
+    const comp=document.getElementById('m-complete');
+    const rb=document.querySelector('#sec-manana .rblock');
+    if(done===total){comp.classList.add('show');if(rb)rb.style.display='none';launchCF();}
+    else{comp.classList.remove('show');if(rb)rb.style.display='';}
+  }
+  if(sec==='noche'){
+    renderList(NIGHT,'noche','n-list');
+    renderStepDots(NIGHT,'noche','n-steps');
+    const done=NIGHT.filter(i=>ST.noche&&ST.noche[i.id]).length;
+    const total=NIGHT.length;const pct=Math.round((done/total)*100);
+    document.getElementById('n-pct').textContent=pct+'%';
+    document.getElementById('n-done-lbl').textContent=`${done} de ${total} pasos`;
+    document.getElementById('n-bar').style.width=pct+'%';
+    const comp=document.getElementById('n-complete');
+    if(done===total){comp.classList.add('show');launchCF();}
+    else comp.classList.remove('show');
+    updateBathBanner();
+  }
+  if(sec==='football'){
+    renderList(FB_PREP,'football','f-prep-list');
+    renderFbBag();
+    renderList(FB_RETURN,'football','f-return-list');
+    const bagDone=FB_BAG.filter(i=>ST.football&&ST.football[i.id]).length;
+    document.getElementById('f-pct').textContent=Math.round((bagDone/FB_BAG.length)*100)+'%';
+    document.getElementById('f-done-lbl').textContent=`${bagDone} de ${FB_BAG.length} items`;
+    document.getElementById('f-bar').style.width=Math.round((bagDone/FB_BAG.length)*100)+'%';
+    const comp=document.getElementById('f-complete');
+    if(bagDone===FB_BAG.length){comp.classList.add('show');launchCF();}
+    else comp.classList.remove('show');
+  }
+}
+
+function resetSec(sec){
+  ST[sec]={};saveSt();
+  const ids={manana:'m-complete',noche:'n-complete',football:'f-complete'};
+  document.getElementById(ids[sec]).classList.remove('show');
+  if(sec==='manana'){const rb=document.querySelector('#sec-manana .rblock');if(rb)rb.style.display='';}
+  renderSec(sec);
+}
+
+function setMode(mode){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.mtab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('sec-'+mode).classList.add('on');
+  document.getElementById('mt-'+mode).classList.add('on');
+  renderSec(mode);
+}
+
+const CFC=['#7C3AED','#A78BFA','#2563EB','#16A34A','#F43F5E','#F59E0B'];
+function launchCF(){
+  for(let i=0;i<22;i++){
+    const el=document.createElement('div');el.className='cfp';
+    el.style.left=Math.random()*100+'vw';
+    el.style.background=CFC[Math.floor(Math.random()*CFC.length)];
+    el.style.animationDuration=(0.8+Math.random()*1.3)+'s';
+    el.style.animationDelay=(Math.random()*0.4)+'s';
+    el.style.borderRadius=Math.random()>0.5?'50%':'3px';
+    el.style.width=el.style.height=(7+Math.random()*6)+'px';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),2800);
+  }
+}
+
+renderSec('manana');updateBathBanner();
+if(now.getDay()===5){document.getElementById('mt-football').style.color='var(--c1)';}
+</script>
+</body>
+</html>
